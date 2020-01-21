@@ -217,3 +217,26 @@ start-dfs.sh
 ```
 start-yarn.sh
 ```
+
+## Run Spark on Top of a Hadoop YARN Cluster
+
+### Download and Install Spark Binaries
+
+```
+wget http://apachemirror.wuchna.com/spark/spark-3.0.0-preview2/spark-3.0.0-preview2-bin-hadoop3.2.tgz
+tar -zxvf spark-3.0.0-preview2-bin-hadoop3.2.tgz
+rm spark-3.0.0-preview2-bin-hadoop3.2.tgz
+ln -s spark-3.0.0-preview2-bin-hadoop3.2 spark
+```
+
+### Integrate Spark with YARN (edit ~/.profile)
+```
+PATH=/home/hadoop/spark/bin:$PATH
+export HADOOP_CONF_DIR=/home/hadoop/hadoop/etc/hadoop
+export SPARK_HOME=/home/hadoop/spark
+export LD_LIBRARY_PATH=/home/hadoop/hadoop/lib/native:$LD_LIBRARY_PATH
+
+execute =>
+source .profile
+```
+
