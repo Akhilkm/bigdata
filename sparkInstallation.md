@@ -88,3 +88,132 @@ export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
         </property>
     </configuration>
 ```
+
+#### Set path for HDFS (Update ~/hadoop/etc/hadoop/hdfs-site.xml)
+```
+<configuration>
+    <property>
+            <name>dfs.namenode.name.dir</name>
+            <value>/home/hadoop/data/nameNode</value>
+    </property>
+
+    <property>
+            <name>dfs.datanode.data.dir</name>
+            <value>/home/hadoop/data/dataNode</value>
+    </property>
+
+    <property>
+            <name>dfs.replication</name>
+            <value>2</value>
+    </property>
+</configuration>
+```
+
+#### Set YARN as Job Scheduler (Update ~/hadoop/etc/hadoop/mapred-site.xml) 
+##### Note: This is required when you are running mapreduce jobs in this cluster
+```
+<configuration>
+    <property>
+            <name>mapreduce.framework.name</name>
+            <value>yarn</value>
+    </property>
+    <property>
+            <name>yarn.app.mapreduce.am.env</name>
+            <value>HADOOP_MAPRED_HOME=$HADOOP_HOME</value>
+    </property>
+    <property>
+            <name>mapreduce.map.env</name>
+            <value>HADOOP_MAPRED_HOME=$HADOOP_HOME</value>
+    </property>
+    <property>
+            <name>mapreduce.reduce.env</name>
+            <value>HADOOP_MAPRED_HOME=$HADOOP_HOME</value>
+    </property>
+</configuration>
+```
+
+#### Configure YARN (Update ~/hadoop/etc/hadoop/yarn-site.xml)
+```
+<configuration>
+    <property>
+            <name>yarn.acl.enable</name>
+            <value>0</value>
+    </property>
+
+    <property>
+            <name>yarn.resourcemanager.hostname</name>
+            <value>hadoop-master1</value>
+    </property>
+
+    <property>
+            <name>yarn.nodemanager.aux-services</name>
+            <value>mapreduce_shuffle</value>
+    </property>
+</configuration>
+```
+
+#### Configure workers (Update ~/hadoop/etc/hadoop/workers)
+```
+hadoop-server2
+hadoop-server3
+```
+#### Configure Memory Allocation
+
+##### ~/hadoop/etc/hadoop/yarn-site.xml
+```
+    <property>
+            <name>yarn.nodemanager.resource.memory-mb</name>
+            <value>3072</value>
+    </property>
+
+    <property>
+            <name>yarn.scheduler.maximum-allocation-mb</name>
+            <value>3072</value>
+    </property>
+
+    <property>
+            <name>yarn.scheduler.minimum-allocation-mb</name>
+            <value>256</value>
+    </property>
+
+    <property>
+            <name>yarn.nodemanager.vmem-check-enabled</name>
+            <value>false</value>
+    </property>
+```
+
+##### ~/hadoop/etc/hadoop/mapred-site.xml
+```
+    <property>
+            <name>yarn.app.mapreduce.am.resource.mb</name>
+            <value>1024</value>
+    </property>
+
+    <property>
+            <name>mapreduce.map.memory.mb</name>
+            <value>512</value>
+    </property>
+
+    <property>
+            <name>mapreduce.reduce.memory.mb</name>
+            <value>512</value>
+    </property>
+```
+
+## Duplicate Config Files on Each Node
+```
+cd /home/hadoop/
+scp hadoop-*.tar.gz node1:/home/hadoop
+scp hadoop-*.tar.gz node2:/home/hadoop
+```
+
+## Format and start HDFS
+```
+hdfs namenode -format
+start-dfs.sh
+```
+
+## Run YARN
+```
+start-yarn.sh
+```
