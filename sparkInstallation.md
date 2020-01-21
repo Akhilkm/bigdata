@@ -9,9 +9,8 @@
     4. Inter communication enabled
 ```
 
+#### Add hostname and ip for all the machines 
 ```
-Add hostname and ip for all the machines 
-
 hostnamectl set-hostname hadoop-server<number>
 hostname -F /etc/hostname
 
@@ -22,9 +21,8 @@ echo """
 """ > /etc/hosts
 ```
 
+#### Set Locale and add JAVA_HOME environment variable
 ```
-Set Locale and add JAVA_HOME environment variable
-
 echo """
 LANGUAGE=\"en_US.UTF-8\"
 LANG=\"en_US.UTF-8\"
@@ -35,9 +33,8 @@ JAVA_HOME=\"/usr/lib/jvm/java-8-openjdk-amd64\"
 exit and reconnect to all the machines
 ```
 
+#### Update the OS and install java8
 ```
-Update the OS and install java8
-
 apt-get update && apt-get -y upgrade
 apt-get install openjdk-8-jdk-headless
 ```
