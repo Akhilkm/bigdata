@@ -1,12 +1,12 @@
 # Create a 3 node apache spark cluster over yarn
 
-### Prerequisites
+## Prerequisites
 ```
 3 running ubuntu machines with the below specification
-    * 4 cores
-    * 8 GB RAM
-    * 64-bit (x86)
-    * Inter communication enabled
+    1. 4 cores
+    2. 8 GB RAM
+    3. 64-bit (x86)
+    4. Inter communication enabled
 ```
 
 ```
@@ -40,4 +40,54 @@ Update the OS and install java8
 
 apt-get update && apt-get -y upgrade
 apt-get install openjdk-8-jdk-headless
+```
+
+## Install and configure a three-node Hadoop cluster
+
+#### Create hadoop user in all the nodes
+```
+adduser hadoop
+su hadoop
+```
+
+#### Distribute Authentication Key-pairs for the Hadoop User
+```
+Login to server1
+ssh-keygen -b 4096
+cat /home/hadoop/.ssh/id_rsa.pub
+
+Copy your key file into the authorized key store of other machines
+copy to ~/.ssh/authorized_keys
+```
+
+#### Download and Unpack Hadoop Binaries
+```
+cd
+wget http://apachemirror.wuchna.com/hadoop/common/hadoop-3.1.3/hadoop-3.1.3.tar.gz
+tar -zxvf hadoop-3.1.3.tar.gz
+rm hadoop-3.1.3.tar.gz
+ln -s hadoop-3.1.3 hadoop
+```
+
+#### Set Environment Variables
+```
+Add the below lines to /home/hadoop/.profile
+PATH=/home/hadoop/hadoop/bin:/home/hadoop/hadoop/sbin:$PATH
+
+Edit .bashrc
+export HADOOP_HOME=/home/hadoop/hadoop
+export PATH=${PATH}:${HADOOP_HOME}/bin:${HADOOP_HOME}/sbin
+```
+
+
+#### Set NameNode Location (Update  ~/hadoop/etc/hadoop/core-site.xml)
+```
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+    <configuration>
+        <property>
+            <name>fs.default.name</name>
+            <value>hdfs://hadoop-server1:9000</value>
+        </property>
+    </configuration>
 ```
