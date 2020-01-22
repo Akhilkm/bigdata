@@ -1,4 +1,4 @@
-# Create a 3 node apache spark cluster over yarn
+# Create a 3 node apache spark cluster over yarn.
 
 ## Prerequisites
 ```
